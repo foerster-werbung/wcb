@@ -24,8 +24,8 @@ git:
                             # Manual changes to these plugins will be overwritten.
 
 plugins:
-    - Rainlab.Pages
-    - Rainlab.Builder
+    - Winter.Pages
+    - Winter.Builder
     - Indikator.Backend
     # - Vendor.Private (user@remote.git)
 
