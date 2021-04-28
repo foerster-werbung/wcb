@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+ALREADY_INSTALLED="/root/ALREADY_INSTALLED"
+ALREADY_SEEDED="/root/ALREADY_SEEDED"
+
+if [ ! -f "winter-cms.yaml" ]; then
+
+    echo 'Initializing winter-cms.yaml in project root'
+    wcb init
+    echo 'You can also start the container again.'
+
+else
+
+    # Run wcb on startup
+    if [ "${WCB_INSTALL,,}" == "true" ] && [ ! -e $ALREADY_INSTALLED ]; then
+
+      echo 'Initializing Winter CMS...'
+      wcb install
+      echo 'Initializing Winter CMS done'
+
+      touch $ALREADY_INSTALLED
+    fi
+
+
+    # Run Seeds
+    if [ "${WCB_SEED,,}" == "true" ] && [ ! -e $ALREADY_SEEDED ]; then
+
+      echo 'Initializing Winter CMS seeds...'
+      wcb seed
+      touch $ALREADY_SEEDED
+
+    fi
+
+    # Pushing crontab
+    if [ "${WCB_CRON,,}" == "true" ]; then
+        echo 'Adding crontab "* * * * * /usr/local/bin/php /var/www/html/artisan schedule:run"'
+        echo "* * * * * /usr/local/bin/php /var/www/html/artisan schedule:run > /proc/1/fd/1 2>/proc/1/fd/2" | tee -a /var/spool/cron/root
+        echo 'Starting cron service'
+        service cron start
+    fi
+
+    docker-oc-entrypoint $@
+
+fi
