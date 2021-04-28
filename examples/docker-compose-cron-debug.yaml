@@ -1,0 +1,22 @@
+version: '2.2'
+services:
+  web:
+    image: foersterwerbung/wcb:latest
+    ports:
+      - 80:80
+    environment:
+      - OCB_INSTALL=true
+      - XDEBUG_ENABLE=true
+      - OCB_CRON=true
+    depends_on:
+      - mysql
+    volumes:
+      - "./:/var/www/html"
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=wintercms
+      - MYSQL_DATABASE=wintercms

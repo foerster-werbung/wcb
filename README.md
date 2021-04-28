@@ -38,6 +38,8 @@ An official Docker image that bundles `wcb`, `composer` and `Envoy` is available
 
 ### Quickstart
 
+You can find some examples in the `examples` folder.
+
 #### 1. Create a `docker-compose.yaml` file in your project root:
 ```
 version: '2.2'
@@ -115,7 +117,7 @@ You have to set a database or a storage folder that should be applied.
 ```
 seed:
     database: dev/migrations
-    stroage: dev/storage
+    storage: dev/storage
 ```
 It executes all `.sql` files in the database folder and copies the storage folder into the current project root
 
